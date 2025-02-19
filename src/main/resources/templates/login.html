@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+    <!-- Include the menu bar fragment -->
+    <div th:replace="~{fragments/menu :: menu-bar}"></div>
+
+    <!-- Include Message if any -->
+    <p th:if="${errorMessage !=null}" th:text="${errorMessage}"></p>
+
+    <!-- Login Form -->
+    <div id="logiForm" >
+        <form method="post" action="/login"> <!--Action  must match @PostMapping in UserController -->
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+</body>
+</html>
