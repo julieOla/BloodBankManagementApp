@@ -1,0 +1,58 @@
+/* Body setup */
+body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* Pseudo-element for the background image */
+body::before {
+    content: ""; /* Creates an empty pseudo-element */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/BloodSaveLife.png'); /* Replace with your image URL */
+    background-size: contain; /* Ensure the background image covers the whole page */
+    background-position: center; /* Position the image in the center */
+    opacity: 0.25; /* Set opacity for the background image */
+    z-index: -1; /* Ensure the background stays behind the content */
+}
+
+/* Content styling */
+#content-section{
+    position: relative;
+    z-index: 1; /* Content stays on top of the background */
+    padding: 20px;
+    color: black;
+    overflow: auto;
+}
+/* Scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark scrollbar thumb */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1); /* Light background for scrollbar track */
+}
+
+#footer{
+    background-color: firebrick;
+    text-align: center;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+    padding: 20px;
+
+
+}

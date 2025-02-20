@@ -42,7 +42,8 @@ public class UserController {
             String message = "Username was left blank";
             model.addAttribute("message", message);
             System.out.println("Username was left blank");
-            return "user_indexSignUp";
+            //return "user_indexSignUp";
+            return  "registration";
         }
 
         Pattern usernameRegex = Pattern.compile("^[a-zA-Z]{3,25}$");
@@ -53,7 +54,8 @@ public class UserController {
             String message = "Username must be between 3-25 characters, letters only";
             model.addAttribute("message", message);
             System.out.println("Username must be between 3-25 characters, letters only");
-            return "user_indexSignUp";
+            //return "user_indexSignUp";
+            return  "registration";
         }
 
         // email validation
@@ -62,7 +64,8 @@ public class UserController {
             String message3 = "Email was left blank";
             model.addAttribute("message3", message3);
             System.out.println("Email was left blank");
-            return "user_indexSignUp";
+           // return "user_indexSignUp";
+            return  "registration";
         }
 
         // password validation
@@ -71,8 +74,8 @@ public class UserController {
             String message4 = "Password was left blank";
             model.addAttribute("message4", message4);
             System.out.println("Password was left blank");
-
-            return "user_indexSignUp";
+            //return "user_indexSignUp";
+            return  "registration";
         }
 
         Pattern passwordRegex = Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.\\d)(?=.[@$!%?&])[A-Za-z\\d@$!%?&]{7,70}$");
@@ -83,21 +86,24 @@ public class UserController {
             String message4 = "Password didnt have at least 7-70 characters, one uppercase letter, one lowercase letter, one number and one special character";
             model.addAttribute("message4", message4);
             System.out.println("Password must have at least 7 characters and maximum 70 characters, one uppercase letter, one lowercase letter and one number");
-            return "user_indexSignUp";
+            //return "user_indexSignUp";
+            return  "registration";
         }
 
         if (password2.isBlank()){
             String message5 = "Confirm Password was left blank";
             model.addAttribute("message5", message5);
             System.out.println("Confirm password was left blank");
-            return "user_indexSignUp";
+            //return "user_indexSignUp";
+            return  "registration";
         }
 
         if (!password.equals(password2)){
             String message5 = "Password and Confirm Password didnt match";
             model.addAttribute("message5", message5);
             System.out.println("Passwords dont match");
-            return "user_indexSignUp";
+            //return "user_indexSignUp";
+            return  "registration";
         }
         String view = "";
 
