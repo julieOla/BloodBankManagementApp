@@ -2,25 +2,28 @@ package BloodBankManagementApp.business;
 
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class Donor {
 
     private int donorID;
 
 
-    //private User user;
+    private User user;
     @NonNull
-    private String userID;
+    private int userID;
 
     @NonNull
     private String fullName;
 
     @NonNull
-    private String dateOfBirth;
+    private Date dateOfBirth;
 
     @NonNull
     private String contactNumber;

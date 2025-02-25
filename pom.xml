@@ -34,8 +34,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-        <!-- Adding Thymleaf Layout Dialect Dependency
-        <dependency>
+        <!-- Adding Thymleaf Layout Dialect Dependency-->
+        <!--<dependency>
             <groupId>az.net.ultrag.thymleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
         </dependency>-->

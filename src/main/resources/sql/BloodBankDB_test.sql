@@ -1,5 +1,5 @@
-CREATE DATABASE BloodBankDB;
-USE BloodBankDB;
+CREATE DATABASE BloodBankDB_test;
+USE BloodBankDB_test;
 
 -- Users Table (Manages authentication for all users)
 CREATE TABLE Users (

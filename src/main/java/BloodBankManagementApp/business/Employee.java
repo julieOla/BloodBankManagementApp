@@ -21,8 +21,6 @@ public class Employee {
 
     private String position;
 
-    private String phone;
-
     private String email;
 }
 

@@ -1,4 +1,4 @@
-USE BloodBankDB;
+USE BloodBankDB_test;
 
 /*
  CREATE TABLE Users (

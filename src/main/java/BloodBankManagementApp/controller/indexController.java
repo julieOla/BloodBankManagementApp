@@ -24,4 +24,11 @@ public class indexController {
     public String getLanding(){
         return "main";
     }
-}
+    public String getAdminDashBoard(){return "addminDashBoard";}
+    @GetMapping("/userRegisterPage")
+    public String getRegistrationForm(){return "registrationForm";}
+    @GetMapping("/donorPage")
+    public String showDonorForm() {
+        return "donorForm"; } // Name of the HTML template (donorForm.htm
+    }
+

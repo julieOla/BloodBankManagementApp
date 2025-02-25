@@ -3,7 +3,8 @@ body {
     margin: 0;
     padding: 0;
     position: relative;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    overflow: scroll;
     font-family: Arial, sans-serif;
 }
 
@@ -16,9 +17,9 @@ body::before {
     width: 100%;
     height: 100%;
     background-image: url('../images/BloodSaveLife.png'); /* Replace with your image URL */
-    background-size: contain; /* Ensure the background image covers the whole page */
+    background-size: cover; /* Ensure the background image covers the whole page */
     background-position: center; /* Position the image in the center */
-    opacity: 0.25; /* Set opacity for the background image */
+    opacity: 0.15; /* Set opacity for the background image */
     z-index: -1; /* Ensure the background stays behind the content */
 }
 
@@ -43,16 +44,20 @@ body::before {
 ::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1); /* Light background for scrollbar track */
 }
+#donor-card{
+    background-color: #495057;
+}
 
-#footer{
+.footer{
     background-color: firebrick;
     text-align: center;
-    position: absolute;
+    /*position: absolute;*/
+    position: relative;
     z-index: 1;
-    width: 100%;
     left: 0px;
     bottom: 0px;
-    padding: 20px;
+    width: 100%;
+    padding: 40px;
 
 
 }
