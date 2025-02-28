@@ -15,15 +15,20 @@
     <div th:replace="~{fragments/menu2 :: menu-bar}"></div>
 
     <!-- Include Message if any -->
-    <p th:if="${errorMessage !=null}" th:text="${errorMessage}"></p>
-    <div class="container mt-5">
+    <!--<p th:if="${errorMessage !=null}" th:text="${errorMessage}"></p>-->
+    <!-- Show Error Message -->
+    <div th:if="${errorMessage}" class="alert  alert-dismissible fade show mt-4" role="alert" style="background-color: lightpink">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <div class="container mt-5 mb-5">
     <!-- Login Form -->
 
     <div class="card mx-auto" style="max-width: 600px;">
         <div class="card-header text-center">
             <h3>Login Information</h3>
         </div>
-        <div class="card-body" id="donor-card">
+        <div class="card-body" id="donor-card" style="background-color: #F1F1F9">
             <form action="/login" method="POST">
                 <!-- User Name -->
                 <div class="mb-3">
@@ -49,7 +54,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <p>&copy; 2025 My Company. All rights reserved.</p>
+                    <p>&copy; 2025 Blood Bank Mangagement App. All rights reserved.</p>
 
                     <!-- Social Media Icons -->
                     <div>

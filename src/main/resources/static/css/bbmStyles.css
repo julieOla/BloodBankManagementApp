@@ -45,7 +45,7 @@ body::before {
     background: rgba(255, 255, 255, 0.1); /* Light background for scrollbar track */
 }
 #donor-card{
-    background-color: #495057;
+    background-color:#F1F1F9; /* #495057;*/
 }
 
 .footer{
