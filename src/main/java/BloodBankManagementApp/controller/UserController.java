@@ -93,7 +93,7 @@ public class UserController {
              */
         }
 
-        Pattern passwordRegex = Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.\\d)(?=.[@$!%?&])[A-Za-z\\d@$!%?&]{7,70}$");
+        /*Pattern passwordRegex = Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.\\d)(?=.[@$!%?&])[A-Za-z\\d@$!%?&]{7,70}$");
         Matcher match1 = passwordRegex.matcher(password);
         boolean matchfoundPassword = match1.find();
 
@@ -105,7 +105,7 @@ public class UserController {
             return  "registrationForm";
 
              */
-        }
+       /* }*/
 
         if (password2.isBlank()){
             errorMsg = "Confirm Password was left blank";
@@ -153,7 +153,7 @@ public class UserController {
         }
         // Build new user with the detail entered in registration form
         User newUser = User.builder()
-                .userID(0)
+                //.userID()
                 .username(username)
                 .password(password)
                 .email(email)
@@ -168,6 +168,7 @@ public class UserController {
         //User u = new User(username, password,email,userRole.name().toUpperCase());
         //User u = new User(0,username, password,email,userRole);
        User u = new User(0,username, password,email,newUserRole);
+
         boolean added = userDao.registerUser(u);
         if(added ){
             view = "registerSuccess";

@@ -26,12 +26,12 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
         boolean added = false;
 
         Connection c = super.getConnection();
-        try (PreparedStatement ps = c.prepareStatement("INSERT INTO users VALUES(?, ?, ?,?,?)")) {
-            ps.setInt(1, user.getUserID());
-            ps.setString(2, user.getUsername());
-            ps.setString(3, user.getPassword());
-            ps.setString(4, user.getEmail());
-            ps.setString(5, user.getRole().toString());
+        try (PreparedStatement ps = c.prepareStatement("INSERT INTO users VALUES( ?, ?,?,?)")) {
+            //ps.setInt(1, user.getUserID());
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getRole().toString());
 
 
             int rowsAffected = ps.executeUpdate();
