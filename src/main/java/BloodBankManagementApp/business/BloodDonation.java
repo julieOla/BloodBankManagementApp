@@ -29,5 +29,6 @@ public class BloodDonation {
     public enum Status {
         STORED, TESTED, SUPPLIED, DISCARDED
     }
+
 }
 
