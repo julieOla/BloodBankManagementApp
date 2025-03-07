@@ -10,6 +10,14 @@ public class indexController {
 
         return "index";
     }
+    @GetMapping("/quizPage")
+    public String getQuizPage() {
+        return "quiz";  // This returns the quiz.html template
+    }
+    @GetMapping("/quizResultPage")
+    public String getQuizResultPage() {
+        return "quizResult";  // This returns the quizResult.html template
+    }
     @GetMapping("/registerPage")
     public String getRegister(){
        // System.out.println("Testing );

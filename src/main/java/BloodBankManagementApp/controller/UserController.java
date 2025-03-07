@@ -150,7 +150,7 @@ public class UserController {
             log.info("User {} registered", newUser.getUsername());
             return "login";
         }else{
-            String failed = "registerFailed";
+            String failed = "registerFailed, You may try again.";
             log.info("Registration failed with username {}", username);
             model.addAttribute("errorMessage", failed);
         }
@@ -190,6 +190,7 @@ public class UserController {
             log.info("Could not register user with username: " + username + "and email: " + password + ",");
 
             String failed = "Username/password incorrect !";
+
             model.addAttribute("message", failed);
             return "login";
         }

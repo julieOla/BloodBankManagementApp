@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Include the menu bar fragment -->
+<div th:replace="~{fragments/menu2 :: menu-bar}"></div>
+<div class="container mt-5">
+    <h2>Blood Donor Eligibility Results</h2>
+    <p><strong>1. Are you between 18 and 65 years old?</strong> <span th:text="${question1}"></span></p>
+    <p><strong>2. Do you weigh at least 50 kg (110 lbs)?</strong> <span th:text="${question2}"></span></p>
+    <p><strong>3. Have you been feeling healthy for the last 24 hours?</strong> <span th:text="${question3}"></span></p>
+    <p><strong>4. Have you been diagnosed with or experienced symptoms of any major illness in the past 30 days (e.g., fever, cold, flu)?</strong> <span th:text="${question4}"></span></p>
+    <p><strong>5. Are you currently taking any medications?</strong> <span th:text="${question4}"></span></p>
+    <p><strong>6. Are you pregnant or have you recently been pregnant (within the last 6 months)?</strong> <span th:text="${question5}"></span></p>
+    <p><strong>7. Have you had a tattoo or piercing in the last 12 months?</strong> <span th:text="${question6}"></span></p>
+    <p><strong>8. Do you have high or low blood pressure that is not controlled by medication?</strong> <span th:text="${question7}"></span></p>
+    <p><strong>9. Have you donated blood in the last 56 days (8 weeks)?</strong> <span th:text="${question8}"></span></p>
+    <p><strong>10. Do you have any chronic medical conditions, such as heart disease, diabetes, or liver disease?</strong> <span th:text="${question9}"></span></p>
+    <p><strong>11. Have you traveled to areas with a high risk of malaria or other infections within the last 12 months?</strong> <span th:text="${question10}"></span></p>
+    <p><strong>12. Have you had a blood transfusion or major surgery in the last 12 months?</strong> <span th:text="${question12}"></span></p>
+    <p><strong>13. Have you consumed alcohol in the last 24 hours?</strong> <span th:text="${question13}"></span></p>
+    <p><strong>14. Have you recently received a vaccination (such as for flu or COVID-19)?</strong> <span th:text="${question14}"></span></p>
+    <p><strong>15. Have you ever been diagnosed with HIV/AIDS or Hepatitis B/C?</strong> <span th:text="${question15}"></span></p>
+
+    <h4 class="mt-3" th:if="${isEligible}">
+        You are eligible to donate blood!
+    </h4>
+    <h4 class="mt-3" th:unless="${isEligible}">
+        Sorry, you are not eligible to donate blood at this time.
+    </h4>
+
+    <a href="/quiz" class="btn btn-primary mt-3">Take the Survey Again</a>
+</div>
+<!-- Footer Section -->
+<footer class="bg-danger text-light text-center p-4 ">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p>&copy; 2025 Blood Bank Mangagement App. All rights reserved.</p>
+
+                <!-- Social Media Icons -->
+                <div>
+                    <a href="https://facebook.com" class="text-light me-3" target="_blank">
+                        <i class="fab fa-facebook fa-2x"></i>
+                    </a>
+                    <a href="https://twitter.com" class="text-light me-3" target="_blank">
+                        <i class="fab fa-twitter fa-2x"></i>
+                    </a>
+                    <a href="https://linkedin.com" class="text-light me-3" target="_blank">
+                        <i class="fab fa-linkedin fa-2x"></i>
+                    </a>
+                    <a href="https://instagram.com" class="text-light me-3" target="_blank">
+                        <i class="fab fa-instagram fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Bootstrap JS (Optional) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
