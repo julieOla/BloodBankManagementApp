@@ -33,24 +33,27 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-item" >
                         <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${#ctx.session.CurrentUser == null}">
                         <a class="nav-link" href="/quizPage">Quiz</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${#ctx.session.CurrentUser == null}">
                         <a class="nav-link" href="/donorPage">Donor</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/loginPage">Login</a>
-                    </li>
-                    <!--<li class="nav-item">
-                        <a class="nav-link" href="/registerPage">Register</a>
-                    </li>-->
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${#ctx.session.CurrentUser == null}">
                         <a class="nav-link" href="/userRegisterPage">SignUp</a>
                     </li>
+                    <li class="nav-item" th:if="${#ctx.session.CurrentUser == null}">
+
+                        <a class="nav-link" href="/loginPage">Login</a>
+                    </li>
+                    <!-- Only show the logout button in menu when logged in -->
+                    <li class="nav-item" th:unless="${#ctx.session.CurrentUser == null}">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="adminDashBoard" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Admin Menu

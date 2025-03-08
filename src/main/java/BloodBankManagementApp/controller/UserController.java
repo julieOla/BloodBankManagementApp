@@ -24,30 +24,30 @@ public class UserController {
     //private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     // register
 
-   /* @PostMapping("register")
-    public String registerUser(*/
-   @PostMapping("addUser")
-   public String registerUser(
-            @RequestParam(name="username") String username,
-            @RequestParam(name="email") String email,
-            @RequestParam(name="password") String password,
-            @RequestParam(name="password2") String password2,
-            @RequestParam(name="role") String role,
+    /* @PostMapping("register")
+     public String registerUser(*/
+    @PostMapping("addUser")
+    public String registerUser(
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "email") String email,
+            @RequestParam(name = "password") String password,
+            @RequestParam(name = "password2") String password2,
+            @RequestParam(name = "role") String role,
             //Role userrole = Enum.EnumDesc<E>,
             //assignRole(@RequestParam("role") User.Role role),
-    //@RequestParam(name="address") String address,
+            //@RequestParam(name="address") String address,
             //@RequestParam(name="dateOfBirth") String dateOfBirth,
             //Model model, HttpSession session) throws InvalidKeySpecException, NoSuchAlgorithmException {
             Model model,
             HttpSession session
 
-    ){
+    ) {
         // VALIDATION
 
 
         // username validation
-       String errorMsg = null;
-        if (username.isBlank()){
+        String errorMsg = null;
+        if (username.isBlank()) {
             errorMsg = "Username was left blank";
 
         }
@@ -56,20 +56,20 @@ public class UserController {
         Matcher match = usernameRegex.matcher(username);
         boolean matchfoundUsername = match.find();
 
-        if (!matchfoundUsername){
+        if (!matchfoundUsername) {
             errorMsg = "Username must be between 3-25 characters, letters in length";
 
         }
 
         // email validation
 
-        if(email.isBlank()) {
+        if (email.isBlank()) {
             errorMsg = "Email was left blank";
         }
 
         // password validation
 
-        if (password.isBlank()){
+        if (password.isBlank()) {
             errorMsg = "Password was left blank";
 
         }
@@ -86,26 +86,26 @@ public class UserController {
             return  "registrationForm";
 
              */
-       /* }*/
+        /* }*/
 
-        if (password2.isBlank()){
+        if (password2.isBlank()) {
             errorMsg = "Confirm Password was left blank";
 
         }
 
-        if (!password.equals(password2)){
+        if (!password.equals(password2)) {
             errorMsg = "Password and Confirm Password didnt match";
 
         }
-       if (errorMsg != null) {
-           model.addAttribute("errorMessage", errorMsg);
+        if (errorMsg != null) {
+            model.addAttribute("errorMessage", errorMsg);
 
-           return "registrationForm";
-       }
+            return "registrationForm";
+        }
 
         // Convert role form  form input (text/string) to Enum
         User.Role newUserRole;
-        switch (role){
+        switch (role) {
             case "admin":
                 newUserRole = User.Role.ADMIN;
                 break;
@@ -120,18 +120,18 @@ public class UserController {
                 break;
 
             default:
-                newUserRole= User.Role.DONOR;
+                newUserRole = User.Role.DONOR;
         }
         // Hash the password before saving to database
-           //String hashedPassword = passwordEncoder.encode(password);
-       // Save the user with hashed password (e.g., userService.save(new User(username, email, hashedPassword, role)))
+        //String hashedPassword = passwordEncoder.encode(password);
+        // Save the user with hashed password (e.g., userService.save(new User(username, email, hashedPassword, role)))
 
-       // Build new user with the detail entered in registration form
+        // Build new user with the detail entered in registration form
         User newUser = User.builder()
                 //.userID()
                 .username(username)
                 .password(password)
-               // .password(hashedPassword)
+                // .password(hashedPassword)
                 .email(email)
                 .role(newUserRole)
                 .build();
@@ -142,21 +142,22 @@ public class UserController {
        /*User u = new User(0,username, password,email,newUserRole);
 
         boolean added = userDao.registerUser(u);*/
-       boolean added = userDao.registerUser(newUser);
-        if(added ){
+        boolean added = userDao.registerUser(newUser);
+        if (added) {
             String success = "registerSuccess";
             model.addAttribute("registered", success);
             session.setAttribute("loggedInUser", newUser);
             log.info("User {} registered", newUser.getUsername());
             return "login";
-        }else{
+        } else {
             String failed = "registerFailed, You may try again.";
             log.info("Registration failed with username {}", username);
             model.addAttribute("errorMessage", failed);
         }
         //return view;
-       return "registrationForm";
+        return "registrationForm";
     }
+
 
     @PostMapping("/login")
     public String login(
@@ -187,7 +188,7 @@ public class UserController {
             return "index";
         } else {
             // Log Info of failed Registration Attempt with imidiate line below
-            log.info("Could not register user with username: " + username + "and email: " + password + ",");
+            log.info("Could not login user with username: " + username + "and password: " + password + ",");
 
             String failed = "Username/password incorrect !";
 
@@ -196,5 +197,12 @@ public class UserController {
         }
     }
 
+    // LOGOUT METHOD
+    @GetMapping("/logout")
+    public String logout(Model model, HttpSession session){
+        session.setAttribute("CurrentUser", null);
+        model.addAttribute("message", "Logout Successful");
+        return "index";
+    }
 
 }
