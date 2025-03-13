@@ -5,7 +5,7 @@ import BloodBankManagementApp.persistence.UserDao;
 import BloodBankManagementApp.persistence.UserDaoImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Role;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import BloodBankManagementApp.utility.Utility;
+
+import javax.crypto.SecretKey;
+//import org.mindrot.jbcrypt.BCrypt;
+
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Slf4j
 
@@ -23,6 +28,18 @@ public class UserController {
 
     //private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     // register
+    /*SecretKey secretKey;
+
+    {
+        try {
+            secretKey = Utility.generateAESKey();
+        } catch (Exception e) {
+            log.info("Error occurred while generating AES key");
+            //throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+        }
+    }*/
+
 
     /* @PostMapping("register")
      public String registerUser(*/
@@ -41,7 +58,7 @@ public class UserController {
             Model model,
             HttpSession session
 
-    ) {
+    ) throws Exception {
         // VALIDATION
 
 
@@ -51,7 +68,7 @@ public class UserController {
             errorMsg = "Username was left blank";
 
         }
-
+        /*
         Pattern usernameRegex = Pattern.compile("^[a-zA-Z]{3,25}$");
         Matcher match = usernameRegex.matcher(username);
         boolean matchfoundUsername = match.find();
@@ -59,7 +76,7 @@ public class UserController {
         if (!matchfoundUsername) {
             errorMsg = "Username must be between 3-25 characters, letters in length";
 
-        }
+        }*/
 
         // email validation
 
@@ -106,16 +123,16 @@ public class UserController {
         // Convert role form  form input (text/string) to Enum
         User.Role newUserRole;
         switch (role) {
-            case "admin":
+            case "ADMIN":
                 newUserRole = User.Role.ADMIN;
                 break;
-            case "donor":
+            case "DONOR":
                 newUserRole = User.Role.DONOR;
                 break;
-            case "employee":
+            case "EMPLOYEE":
                 newUserRole = User.Role.EMPLOYEE;
                 break;
-            case "hospital_Admin":
+            case "HOSPITAL_ADMIN":
                 newUserRole = User.Role.HOSPITAL_ADMIN;
                 break;
 
@@ -123,15 +140,29 @@ public class UserController {
                 newUserRole = User.Role.DONOR;
         }
         // Hash the password before saving to database
+        // Hash the password wby calling the method from utility
+        // Example plaintext
+        //String plaintext = "Hello, this is a secret message!";
+
+        // Generate an AES key
+        //SecretKey secretKey = Utility.generateAESKey();
+
+        // Encrypt the plaintext
+        //String encryptedText = Utility.encrypt(password, secretKey);
+        //String hashedPassword = Utility.;
+        String hashedPassword = Utility.hashPassword(password);
         //String hashedPassword = passwordEncoder.encode(password);
         // Save the user with hashed password (e.g., userService.save(new User(username, email, hashedPassword, role)))
+        //$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        //String hashedPassword = password_hash(password, PASSWORD_BCRYPT);
 
         // Build new user with the detail entered in registration form
         User newUser = User.builder()
                 //.userID()
                 .username(username)
-                .password(password)
-                // .password(hashedPassword)
+                //.password(password)
+                .password(hashedPassword)
+                //.password(encryptedText)
                 .email(email)
                 .role(newUserRole)
                 .build();
@@ -163,7 +194,7 @@ public class UserController {
     public String login(
             @RequestParam(name = "username") String username,
             @RequestParam(name = "password") String password,
-            Model model, HttpSession session) {
+            Model model, HttpSession session) throws Exception {
         String errorMsg = null;
         if (username.isBlank() || username == null) {
             errorMsg = "Username and password cannot be blank";
@@ -177,15 +208,40 @@ public class UserController {
             return "login";
         }
 
-        UserDao userDao = new UserDaoImpl("database.properties");
-        User loggedInUser = userDao.login(username, password);
 
-        if (loggedInUser != null) {
+        // Hash the password before comparing with that from database
+        // Hash the password why calling the method from utility
+         //String hashedPassword = Utility.hashPassword(password);
+        UserDao userDao = new UserDaoImpl("database.properties");
+        //User loggedInUser = userDao.login(username, password);
+        User loggedInUser = userDao.loginByUsername(username);
+        //User loggedInUser = userDao.login(username, hashedPassword);
+        String storedHash = loggedInUser.getPassword();
+        User.Role role = loggedInUser.getRole();
+        // Decrypt the ciphertext
+        //String decryptedText = Utility.decrypt(storedHash, secretKey);
+        boolean pwd_same = Utility.checkPassword(password, storedHash);
+        //if ((loggedInUser != null) && (Utility.checkPassword(hashedPassword, dbpwd))) {
+        //if ((loggedInUser != null) && (BCrypt.checkpw(password, dbpwd)) == true) {
+        //if (Utility.checkPassword(hashedPassword, storedHash)) {
+        /*if(decryptedText.equals(password)){
             String success = "Login Successful !";
             model.addAttribute("message", success);
             // Start session for current login user
-            session.setAttribute("CurrentUser", loggedInUser);
+            session.setAttribute("CurrentUser", loggedInUser); // Sets loggedInUser as current session user
             return "index";
+        }*/
+        /*if (!pwd_same){
+
+        }*/
+        if ((loggedInUser != null) && (pwd_same)){
+
+                String success = "Login Successful !";
+                model.addAttribute("message", success);
+                // Start session for current login user
+                session.setAttribute("CurrentUser", loggedInUser); // Sets loggedInUser as current session user
+                return "index";
+
         } else {
             // Log Info of failed Registration Attempt with imidiate line below
             log.info("Could not login user with username: " + username + "and password: " + password + ",");
@@ -197,10 +253,27 @@ public class UserController {
         }
     }
 
+
+
+
+      /*  UserDao userDao = new UserDaoImpl("database.properties");
+
+        User user  = userDao.login(username, password);
+
+        if (user == null){
+
+            return "error";
+        }
+
+        return "index";
+    }*/
+
+
+
     // LOGOUT METHOD
     @GetMapping("/logout")
     public String logout(Model model, HttpSession session){
-        session.setAttribute("CurrentUser", null);
+        session.setAttribute("CurrentUser", null); // Sets current user to null
         model.addAttribute("message", "Logout Successful");
         return "index";
     }

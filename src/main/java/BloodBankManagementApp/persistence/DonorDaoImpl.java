@@ -27,8 +27,8 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
         boolean added = false;
 
         Connection c = super.getConnection();
-
-        try (PreparedStatement ps = c.prepareStatement("INSERT INTO donors VALUES(?, ?, ?,?,?,?)")) {
+        //User donorUser =
+        try (PreparedStatement ps = c.prepareStatement("INSERT INTO donors VALUES(?, ?, ?,?,?)")) {
             ps.setInt(1, donor.getUser().getUserID());
             ps.setString(2, donor.getFullName());
             ps.setDate(3, (Date) donor.getDateOfBirth());

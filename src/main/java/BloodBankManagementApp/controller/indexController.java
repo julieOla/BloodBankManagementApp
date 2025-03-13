@@ -25,14 +25,17 @@ public class indexController {
     }
     @GetMapping("/loginPage")
     public String getLogin(){
+
         return "login";
     }
 
     @GetMapping("/landingPage")
     public String getLanding(){
+
         return "main";
     }
-    public String getAdminDashBoard(){return "addminDashBoard";}
+    @GetMapping("/adminDashBoard")
+    public String getAdminDashBoard(){return "adminDashBoard";}
     @GetMapping("/userRegisterPage")
     public String getRegistrationForm(){return "registrationForm";}
     @GetMapping("/donorPage")

@@ -53,6 +53,28 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
         return null;
     }*/
     @Override
+    public User loginByUsername(String username) {
+        User user = null;
+        Connection c = super.getConnection();
+        try (PreparedStatement ps = c.prepareStatement("SELECT * FROM users WHERE username = ? ")) {
+            ps.setString(1, username);
+
+
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    user = mapRow(rs);
+                }
+            }catch (SQLException e) {
+                log.error("SQLException occurred when processing login query resultset", e);
+            }
+        }catch (SQLException e) {
+            log.error("SQLException occurred when attempting to login User", e);
+        }
+        super.freeConnection(c);
+
+        return user;
+    }
+    @Override
     public User login(String username, String password) {
         User user = null;
         Connection c = super.getConnection();
@@ -75,16 +97,56 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
         return user;
     }
 
-    static User.Role role;
+    //static User.Role role;
 
     private static User mapRow(ResultSet rs) throws SQLException {
+        // Assuming "role" in the ResultSet is a string (e.g., "ADMIN" or "USER")
+        String roleString = rs.getString("role");
+
+        // Convert the string to the corresponding User.Role enum
+        User.Role userRole = null;
+
+        try {
+            userRole = User.Role.valueOf(roleString);
+        }catch (IllegalArgumentException e) {
+            log.info("Unknown user role !");
+            // Handle unknown role or set a default role
+            //role = User.Role.DONOR;  // Default role if the value is invalid
+        }
+
         return User.builder()
                 .username(rs.getString("username"))
                 .password(rs.getString("passwordHash"))
                 .email(rs.getString("email"))
-                .role(role)
+                .role(userRole)
                 .build();
     }
+    // Convert role form  form input (text/string) to Enum
+    /*private static String convertRoleToString(User.Role role) {
+        String userRole ;
+        switch (role.toString()) {
+            case "admin":
+                userRole = role.toString();
+
+                break;
+            case "donor":
+                userRole = role.toString();
+                //newUserRole = User.Role.DONOR;
+                break;
+            case "employee":
+                userRole = role.toString();
+                //newUserRole = User.Role.EMPLOYEE;
+                break;
+            case "hospital_Admin":
+                userRole = role.toString();
+                //newUserRole = User.Role.HOSPITAL_ADMIN;
+                break;
+
+            default:
+                userRole = "null";
+                //newUserRole = User.Role.DONOR;
+        }
+    }*/
     private boolean  validUser(User u){
         if(u == null){
             return false;
