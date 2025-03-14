@@ -32,7 +32,7 @@ public class indexController {
     @GetMapping("/landingPage")
     public String getLanding(){
 
-        return "main";
+        return "landing";
     }
     @GetMapping("/adminDashBoard")
     public String getAdminDashBoard(){return "adminDashBoard";}

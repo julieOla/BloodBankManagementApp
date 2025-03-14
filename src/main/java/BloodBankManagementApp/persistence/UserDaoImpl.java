@@ -1,5 +1,7 @@
 package BloodBankManagementApp.persistence;
 import BloodBankManagementApp.business.User;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
@@ -107,7 +109,24 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
         User.Role userRole = null;
 
         try {
-            userRole = User.Role.valueOf(roleString);
+            switch (roleString.toUpperCase()){
+
+                case "DONOR":
+                    userRole=User.Role.DONOR;
+                    break;
+                case "EMPLOYEE":
+                    userRole=User.Role.EMPLOYEE;
+                    break;
+                case "ADMIN":
+                    userRole=User.Role.ADMIN;
+                    break;
+                case "HOSPITAL":
+                    userRole=User.Role.HOSPITAL_ADMIN;
+                    break;
+                default:
+                    userRole = User.Role.DONOR;
+
+            }
         }catch (IllegalArgumentException e) {
             log.info("Unknown user role !");
             // Handle unknown role or set a default role
@@ -121,32 +140,7 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
                 .role(userRole)
                 .build();
     }
-    // Convert role form  form input (text/string) to Enum
-    /*private static String convertRoleToString(User.Role role) {
-        String userRole ;
-        switch (role.toString()) {
-            case "admin":
-                userRole = role.toString();
 
-                break;
-            case "donor":
-                userRole = role.toString();
-                //newUserRole = User.Role.DONOR;
-                break;
-            case "employee":
-                userRole = role.toString();
-                //newUserRole = User.Role.EMPLOYEE;
-                break;
-            case "hospital_Admin":
-                userRole = role.toString();
-                //newUserRole = User.Role.HOSPITAL_ADMIN;
-                break;
-
-            default:
-                userRole = "null";
-                //newUserRole = User.Role.DONOR;
-        }
-    }*/
     private boolean  validUser(User u){
         if(u == null){
             return false;

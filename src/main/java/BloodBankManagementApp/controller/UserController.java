@@ -210,37 +210,25 @@ public class UserController {
 
 
         // Hash the password before comparing with that from database
-        // Hash the password why calling the method from utility
-         //String hashedPassword = Utility.hashPassword(password);
-        UserDao userDao = new UserDaoImpl("database.properties");
-        //User loggedInUser = userDao.login(username, password);
-        User loggedInUser = userDao.loginByUsername(username);
-        //User loggedInUser = userDao.login(username, hashedPassword);
-        String storedHash = loggedInUser.getPassword();
-        User.Role role = loggedInUser.getRole();
-        // Decrypt the ciphertext
-        //String decryptedText = Utility.decrypt(storedHash, secretKey);
-        boolean pwd_same = Utility.checkPassword(password, storedHash);
-        //if ((loggedInUser != null) && (Utility.checkPassword(hashedPassword, dbpwd))) {
-        //if ((loggedInUser != null) && (BCrypt.checkpw(password, dbpwd)) == true) {
-        //if (Utility.checkPassword(hashedPassword, storedHash)) {
-        /*if(decryptedText.equals(password)){
-            String success = "Login Successful !";
-            model.addAttribute("message", success);
-            // Start session for current login user
-            session.setAttribute("CurrentUser", loggedInUser); // Sets loggedInUser as current session user
-            return "index";
-        }*/
-        /*if (!pwd_same){
+        //Hash the password why calling the method from utility
 
-        }*/
+        UserDao userDao = new UserDaoImpl("database.properties");
+        // Retrieve user details from databse
+        User loggedInUser = userDao.loginByUsername(username);
+        // Store users hashed password in a variable
+        String storedHash = loggedInUser.getPassword();
+       // User.Role role = loggedInUser.getRole(); // Store user's role from db
+        //Checks plain_text passwod from login form is same with Hashed password stored in database
+        boolean pwd_same = Utility.checkPassword(password, storedHash);
+        // If user exist and plainText and storeHashedPassword are the same
         if ((loggedInUser != null) && (pwd_same)){
 
                 String success = "Login Successful !";
                 model.addAttribute("message", success);
                 // Start session for current login user
                 session.setAttribute("CurrentUser", loggedInUser); // Sets loggedInUser as current session user
-                return "index";
+                //return "index";
+            return "landing";
 
         } else {
             // Log Info of failed Registration Attempt with imidiate line below
@@ -251,9 +239,10 @@ public class UserController {
             model.addAttribute("message", failed);
             return "login";
         }
+
     }
 
-
+     //if (loggedInUser.getRole() == User.Role.ADMIN){}
 
 
       /*  UserDao userDao = new UserDaoImpl("database.properties");

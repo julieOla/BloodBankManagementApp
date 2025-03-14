@@ -49,6 +49,10 @@
 
                         <a class="nav-link" href="/loginPage">Login</a>
                     </li>
+                    <li class="nav-item" th:if="${#ctx.session.CurrentUser != null}">
+
+                        <a class="nav-link" href="/landingPage">Landing</a>
+                    </li>
                     <!-- Only show the logout button in menu when logged in -->
                     <li class="nav-item" th:unless="${#ctx.session.CurrentUser == null}">
                         <a class="nav-link" href="/logout">Logout</a>
