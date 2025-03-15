@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface DonorDao {
     public  boolean addDonor(Donor donor);
-    public List<Donor> getDonorsByBloodType(BloodType type);
+    public List<Donor> getAllDonor();
+    public Donor getDonorById(int donorId);
 }

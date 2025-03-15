@@ -35,10 +35,10 @@ public class indexController {
         return "landing";
     }
     @GetMapping("/adminDashBoard")
-    public String getAdminDashBoard(){return "adminDashBoard";}
+    public String getAdminDashBoard(){return "admin-dashboard";}
     @GetMapping("/userRegisterPage")
     public String getRegistrationForm(){return "registrationForm";}
-    @GetMapping("/donorPage")
+    @GetMapping("/addDonorPage")
     public String showDonorForm() {
         return "donorForm"; } // Name of the HTML template (donorForm.htm
     }

@@ -26,23 +26,7 @@ import javax.crypto.SecretKey;
 @Controller
 public class UserController {
 
-    //private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    // register
-    /*SecretKey secretKey;
 
-    {
-        try {
-            secretKey = Utility.generateAESKey();
-        } catch (Exception e) {
-            log.info("Error occurred while generating AES key");
-            //throw new RuntimeException(e);
-            System.out.println(e.getMessage());
-        }
-    }*/
-
-
-    /* @PostMapping("register")
-     public String registerUser(*/
     @PostMapping("addUser")
     public String registerUser(
             @RequestParam(name = "username") String username,
@@ -50,11 +34,7 @@ public class UserController {
             @RequestParam(name = "password") String password,
             @RequestParam(name = "password2") String password2,
             @RequestParam(name = "role") String role,
-            //Role userrole = Enum.EnumDesc<E>,
-            //assignRole(@RequestParam("role") User.Role role),
-            //@RequestParam(name="address") String address,
-            //@RequestParam(name="dateOfBirth") String dateOfBirth,
-            //Model model, HttpSession session) throws InvalidKeySpecException, NoSuchAlgorithmException {
+
             Model model,
             HttpSession session
 
@@ -217,18 +197,19 @@ public class UserController {
         User loggedInUser = userDao.loginByUsername(username);
         // Store users hashed password in a variable
         String storedHash = loggedInUser.getPassword();
-       // User.Role role = loggedInUser.getRole(); // Store user's role from db
+        // User.Role role = loggedInUser.getRole(); // Store user's role from db
         //Checks plain_text passwod from login form is same with Hashed password stored in database
         boolean pwd_same = Utility.checkPassword(password, storedHash);
         // If user exist and plainText and storeHashedPassword are the same
-        if ((loggedInUser != null) && (pwd_same)){
+        if ((loggedInUser != null) && (pwd_same)) {
 
-                String success = "Login Successful !";
-                model.addAttribute("message", success);
-                // Start session for current login user
-                session.setAttribute("CurrentUser", loggedInUser); // Sets loggedInUser as current session user
-                //return "index";
+            String success = "Login Successful !";
+            model.addAttribute("message", success);
+            // Start session for current login user
+            session.setAttribute("CurrentUser", loggedInUser); // Sets loggedInUser as current session user
+            //return "index";
             return "landing";
+
 
         } else {
             // Log Info of failed Registration Attempt with imidiate line below
@@ -237,10 +218,33 @@ public class UserController {
             String failed = "Username/password incorrect !";
 
             model.addAttribute("message", failed);
-            return "login";
+            //return "login";
         }
-
+        return "login";
     }
+        /*if ((loggedInUser != null) && (pwd_same)) {
+
+            String success = "Login Successful !";
+            model.addAttribute("message", success);
+            // Start session for current login user
+            session.setAttribute("CurrentUser", loggedInUser); // Sets loggedInUser as current session user
+            //return "index";
+            return "landing";
+
+
+        }
+        if((loggedInUser.getRole() == User.Role.ADMIN) && ((loggedInUser != null) && (pwd_same)) ){
+
+            String success = "Login Successful !";
+            model.addAttribute("message", success);
+            // Start session for current login user
+            session.setAttribute("AdminUser", loggedInUser);
+
+            return "admin-dashboard";
+
+        }
+        return "login";
+    }*/
 
      //if (loggedInUser.getRole() == User.Role.ADMIN){}
 

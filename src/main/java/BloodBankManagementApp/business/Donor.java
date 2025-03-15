@@ -8,10 +8,13 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Add equals and hashcode methods - only include the specifically noted variables
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Builder
 public class Donor {
 
+    @EqualsAndHashCode.Include
     private int donorID;
 
 

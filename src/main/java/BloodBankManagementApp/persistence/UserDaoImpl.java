@@ -77,12 +77,12 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
         return user;
     }
     @Override
-    public User login(String username, String password) {
+    public User getUserByUserName(String username) {
         User user = null;
         Connection c = super.getConnection();
-        try (PreparedStatement ps = c.prepareStatement("SELECT * FROM users WHERE username = ? AND passwordHash = ?")) {
+        try (PreparedStatement ps = c.prepareStatement("SELECT * FROM users WHERE username = ? ")) {
             ps.setString(1, username);
-            ps.setString(2, password);
+
 
             try(ResultSet rs = ps.executeQuery()){
                 if(rs.next()){
@@ -134,12 +134,14 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
         }
 
         return User.builder()
+                .userID(rs.getInt("userID"))
                 .username(rs.getString("username"))
                 .password(rs.getString("passwordHash"))
                 .email(rs.getString("email"))
                 .role(userRole)
                 .build();
     }
+
 
     private boolean  validUser(User u){
         if(u == null){
