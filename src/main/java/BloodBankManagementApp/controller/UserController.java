@@ -121,20 +121,8 @@ public class UserController {
         }
         // Hash the password before saving to database
         // Hash the password wby calling the method from utility
-        // Example plaintext
-        //String plaintext = "Hello, this is a secret message!";
-
-        // Generate an AES key
-        //SecretKey secretKey = Utility.generateAESKey();
-
         // Encrypt the plaintext
-        //String encryptedText = Utility.encrypt(password, secretKey);
-        //String hashedPassword = Utility.;
         String hashedPassword = Utility.hashPassword(password);
-        //String hashedPassword = passwordEncoder.encode(password);
-        // Save the user with hashed password (e.g., userService.save(new User(username, email, hashedPassword, role)))
-        //$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        //String hashedPassword = password_hash(password, PASSWORD_BCRYPT);
 
         // Build new user with the detail entered in registration form
         User newUser = User.builder()

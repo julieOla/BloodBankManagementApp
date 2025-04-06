@@ -70,7 +70,8 @@
                             <li><a class="dropdown-item" href="#">View User List</a></li>
                             <li th:if="${#ctx.session.CurrentUser != null }"><a class="dropdown-item" href="/addDonorPage">Add Donor</a></li>
                             <li><hr class="dropdown-divider">More Actions</li>
-                            <li><a class="dropdown-item" href="#">list Donors</a></li>
+                           <!-- <li><a class="dropdown-item" href="/listDonorsPage">list Donors</a></li>-->
+                            <li><a class="dropdown-item" href="/viewDonors">list Donors</a></li>
                             <li><a class="dropdown-item" href="#">Edit Donation</a></li>
                         </ul>
                     </li>

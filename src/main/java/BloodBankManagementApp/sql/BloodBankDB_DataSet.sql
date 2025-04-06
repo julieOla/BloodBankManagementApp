@@ -10,11 +10,6 @@ USE BloodBankDB;
 )
  */
 /*Data for the table `Users` */
-/*INSERT INTO Users(userID, username, password, email, role)
-VALUES(1, 'brigjones','bj123', 'brig@jones.co.uk', 'employee'),
-      (2, 'Maryblack','dd234', 'mary@black.com', 'admin'),
-      (3, 'DanDavito','dd234', 'dan@davito.com', 'donor'),
-      (4, 'KerryJob','kj001', 'kerry@job.org', 'hospital_admin');*/
 INSERT INTO Users( username, passwordHash, email, role)
 VALUES( 'brigjones','bj123', 'brig@jones.co.uk', 'employee'),
       ( 'Maryblack','mb190', 'mary@black.com', 'admin'),
@@ -43,7 +38,7 @@ VALUES( 3,'Dan Davito','2000-03-20','+353421490', '6 College rd., Dundalk, co.Lo
                            fullName VARCHAR(100) NOT NULL,
                            position VARCHAR(50) NOT NULL,
                            /*salary DECIMAL(10,2),
-                           /*phone VARCHAR(15) NOT NULL,
+                           phone VARCHAR(15) NOT NULL,
                            email VARCHAR(100) UNIQUE NOT NULL,
                            FOREIGN KEY (userID) REFERENCES Users(userID) ON DELETE CASCADE,
                            FOREIGN KEY (hospitalID) REFERENCES Hospitals(hospitalID) ON DELETE CASCADE

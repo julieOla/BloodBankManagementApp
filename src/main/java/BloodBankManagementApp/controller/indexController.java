@@ -40,6 +40,11 @@ public class indexController {
     public String getRegistrationForm(){return "registrationForm";}
     @GetMapping("/addDonorPage")
     public String showDonorForm() {
-        return "donorForm"; } // Name of the HTML template (donorForm.htm
+        return "donorForm"; }// Name of the HTML template (donorForm.htm
+
+   /* @GetMapping("/listDonorsPage")
+    public String showListDonors() {
+        return "listDonors"; } // Name of the HTML template (listDonors.htm
+`   */
     }
 

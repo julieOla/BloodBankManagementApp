@@ -4,6 +4,10 @@ import BloodBankManagementApp.business.Donor;
 import BloodBankManagementApp.business.User;
 import BloodBankManagementApp.persistence.DonorDao;
 import BloodBankManagementApp.persistence.DonorDaoImpl;
+import BloodBankManagementApp.persistence.UserDao;
+import BloodBankManagementApp.persistence.UserDaoImpl;
+import BloodBankManagementApp.utility.DateValidation;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,26 +17,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
+import java.util.List;
+
 @Slf4j
 @Controller
 public class donorController {
-
+DateValidation validation = new DateValidation();
     @PostMapping("addDonor")
-    public String addDonor(
-            @RequestParam(name = "fullName") String fullName,
+    public String addNewDonor(
+            @RequestParam(name = "firstName") String firstName,
+            @RequestParam(name = "lastName") String lastName,
             @RequestParam(name="dateOfBirth") Date dateOfBirth,
             @RequestParam(name="contactNumber") String contactNumber,
             @RequestParam(name="address") String address,
 
-            Model model
-    ){
+            Model model, HttpSession session
+    )throws Exception{
         String errorMsg = null;
-        if (fullName == null || fullName.isBlank()) {
-            errorMsg = "You cannot register without fullname";
-        } else if (dateOfBirth == null || !isValidateAge(dateOfBirth)) {
+        if (firstName == null || firstName.isBlank()) {
+            errorMsg = "You cannot register without firstname";
+        }else if (lastName == null || lastName.isBlank()) {
+            errorMsg = "You cannot register without lastname";
+        }
+
+       /* else if (dateOfBirth == null || !isValidAge(dateOfBirth)) {
             errorMsg = "You must be 18 and above to become a donor";
-        } else if (contactNumber == null || contactNumber.isBlank() || !isValidContactNumber(contactNumber)) {
+        }*/ else if (contactNumber == null || contactNumber.isBlank() || !isValidContactNumber(contactNumber)) {
             errorMsg = "Your contact number must be a local number !";
         } else if (address == null || address.isEmpty()) {
             errorMsg = "Your contact Address is required";
@@ -42,11 +54,13 @@ public class donorController {
 
             return "donorForm";
         }
-        User user = new User();
+        String userName = firstName.concat(lastName);
+        UserDao userDao = new UserDaoImpl("database.properties");
+        User userDonor = userDao.getUserByUserName(userName);
         // Build new user with the detail entered in registration form
         Donor newDonor = Donor.builder()
-                .userID(user.getUserID())
-                .fullName(fullName)
+                .userID(userDonor.getUserID())
+                .fullName(userName)
                 .dateOfBirth(dateOfBirth)
                 .contactNumber(contactNumber)
                 .address(address)
@@ -57,37 +71,69 @@ public class donorController {
         DonorDao donorDao = new DonorDaoImpl("database.properties");
         boolean donorAdded = donorDao.addDonor(newDonor);
         if (donorAdded) {
-            String success = "Registration Successful";
+            String success = "Donor added Successful";
             model.addAttribute("message", success);
             return "index";
         } else {
-            // Log Info of failed Registration Attempt with imidiate line below
-            //log.info("Could not register user with username: " + username + "and email: " + email + ",");
-            String failed = "could not register at this time";
+
+            log.info("Could not add this donor : " + userName );
+            String failed = "could not add donor to database, Try again";
             model.addAttribute("errorMessage", failed);
         }
         //return "register";
         return "donorForm";
 
     }
-    public  boolean isValidateAge(Date date){
+    static boolean isValidAge(java.util.Date date) throws Exception{
+        LocalDate currentDate = LocalDate.now();
+
+        // date = new Date();
+        LocalDate local = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        int age = Period.between( local, currentDate ).getYears();
+        // return age;
+
+        boolean isEligibleAge = false;
+        if(age > 17 && age < 66){
+            isEligibleAge = true;
+        }
+        return isEligibleAge;
+        // return (Period.between( currentDate , local).getYears());
+    }
+    /*private   boolean isValidateAge(Date date)throws IllegalArgumentException{
         LocalDate today  = LocalDate.now();
         // Convert Date to LocalDate
         LocalDate localDate = date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
-        if(today.getYear() - localDate.getYear() < 18){
+        if((today.getYear() - localDate.getYear()) < 18){
             return false;
         }
         return true;
 
-    }
-    public boolean isValidContactNumber(String contactNumber){
+    }*/
+    private boolean isValidContactNumber(String contactNumber)throws IllegalArgumentException{
 
-        String firstFour = "+535";
+        String firstFour = "+353";
         if(contactNumber.startsWith(firstFour) == true){
             return true;
         }
         return  false;
+    }
+    // List Donors
+    @GetMapping("/viewDonors")
+    public String showListOfDonors(Model model){
+        List<Donor> donors ;
+        DonorDao donorDao = new DonorDaoImpl("database.properties");
+        donors = donorDao.getAllDonor();
+        model.addAttribute("donors", donors);
+        return "listDonors";
+    }
+    @GetMapping("/getDonor")
+    public String getDonorDetail(@RequestParam(name = "donorID") int donorID, Model model){
+        model.addAttribute("donorID", donorID);
+        return "landing";
+
     }
 }

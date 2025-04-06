@@ -31,8 +31,8 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
 
         Connection c = super.getConnection();
         //User donorUser =
-        try (PreparedStatement ps = c.prepareStatement("INSERT INTO donors VALUES(?, ?, ?,?,?)")) {
-            ps.setInt(1, donor.getUser().getUserID());
+        try (PreparedStatement ps = c.prepareStatement("INSERT INTO donors (userID, fullName, dateOfBirth, contactNumber, address) VALUES(?, ?, ?,?,?)")) {
+            ps.setInt(1, donor.getUserID());
             ps.setString(2, donor.getFullName());
             ps.setDate(3, (Date) donor.getDateOfBirth());
             ps.setString(4, donor.getContactNumber());
@@ -104,7 +104,7 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
     private static Donor mapRow(ResultSet rs) throws SQLException {
 
         return Donor.builder()
-                .userID(rs.getInt("donorID"))
+                .donorID(rs.getInt("donorID"))
                 .userID(rs.getInt("userID"))
                 .fullName(rs.getString("fullName"))
                 .dateOfBirth(rs.getDate("dateOfBirth"))
