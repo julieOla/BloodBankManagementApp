@@ -48,12 +48,22 @@ INSERT INTO  employees( userID, hospitalID, fullName, position, email)
 VALUES(1, 1, 'Brig Jones', 'Matron','brigjone@olol.ie');
 /*Data for the table `Donors` */
 
-
+/*Data for the table `bloodtypes` */
+INSERT INTO bloodtypes (bloodType)
+VALUES
+    ('A+'),
+    ('A-'),
+    ('B+'),
+    ('B-'),
+    ('O+'),
+    ('O-'),
+    ('AB+'),
+    ('AB-');
 
 /*Data for the table `BloodDonations` */
-INSERT INTO BloodDonations ( bloodTypeID, quantity, collectionDate, status)
-VALUES ( 2, 0.5, '2025-02-14', 'Stored'),
-       ( 1, 0.5, '2025-02-14', 'Stored');
+INSERT INTO BloodDonations (donorID ,bloodTypeID, quantity, collectionDate, status)
+VALUES (1, 2, 0.5, '2025-02-14', 'Stored'),
+       (2, 1, 0.5, '2025-02-14', 'Stored');
 
 /*Data for the table `BloodTests` */
 INSERT INTO BloodTests (donationID, testDate, result, notes)

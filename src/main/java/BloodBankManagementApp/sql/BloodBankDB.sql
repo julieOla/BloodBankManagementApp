@@ -32,7 +32,8 @@ CREATE TABLE BloodDonations (
                                 donationID INT AUTO_INCREMENT PRIMARY KEY,
                                 donorID INT NOT NULL,
                                 bloodTypeID INT NOT NULL,
-                                quantity DECIMAL(5,2) NOT NULL CHECK (quantity > 0), -- Quantity in liters
+                            --    quantity DECIMAL(5,2) NOT NULL CHECK (quantity > 0), -- Quantity in liters
+                                quantity DOUBLE(5,2) NOT NULL CHECK (quantity > 0),
                                 collectionDate DATE NOT NULL,
                                 status ENUM('Stored', 'Tested', 'Supplied', 'Discarded') DEFAULT 'Stored',
                                 FOREIGN KEY (donorID) REFERENCES Donors(donorID) ON DELETE CASCADE,
@@ -92,3 +93,53 @@ CREATE TABLE BloodSupplies (
                                FOREIGN KEY (requestID) REFERENCES BloodRequests(requestID) ON DELETE CASCADE,
                                FOREIGN KEY (donationID) REFERENCES BloodDonations(donationID) ON DELETE CASCADE
 );
+
+-- Create Employees Table
+CREATE TABLE Employees (
+                           EmployeeID INT PRIMARY KEY,
+                           FirstName VARCHAR(100),
+                           LastName VARCHAR(100),
+                           Salary DECIMAL(10, 2),
+                           Department VARCHAR(100)
+);
+--  DonorsLogs Table ( Tracks Update action on donors table)
+CREATE TABLE DonorsLogs (
+                              LogID INT AUTO_INCREMENT PRIMARY KEY,
+                              DonorID INT,
+                              ActionType VARCHAR(50),
+                              OldContactNumber  VARCHAR(50),
+                              OldAddress  TEXT(50),
+                           -- LogMessage VARCHAR(255),
+                              LogDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+-- Create TRIGGER To insert Update into DonorsLogs table each Transaction
+DELIMITER $$
+CREATE TRIGGER before_donors_update
+    BEFORE UPDATE ON donors
+    FOR EACH ROW
+BEGIN
+    IF OLD.contactNumber != NEW.contactNumber AND OLD.address != NEW.address THEN
+        INSERT INTO DonorsLogs (donorID, ActionType, OldContactNumber, OldAddress)
+        VALUES (NEW.donorID, 'UPDATE', OLD.contactNumber, OLD.address );
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- Create TRIGGER on Donors table Before Update
+/*DELIMITER $$
+
+CREATE TRIGGER before_donors_update
+    BEFORE UPDATE ON donors
+    FOR EACH ROW
+BEGIN
+    IF OLD.contactNumber != NEW.contactNumber AND OLD.address != NEW.address THEN
+        INSERT INTO DonorsLogs (donorID, ActionType, OldContactNumber, OldAddress)
+        VALUES (NEW.donorID, 'UPDATE', CONCAT('ContactNumber changed from ', OLD.contactNumber, ' to ', NEW.contactNumber), CONCAT('Address changed from ', OLD.address, ' to ', NEW.address) );
+    END IF;
+END $$
+
+DELIMITER ;
+*/
+
+

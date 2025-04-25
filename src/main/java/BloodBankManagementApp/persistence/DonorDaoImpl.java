@@ -3,8 +3,10 @@ package BloodBankManagementApp.persistence;
 import BloodBankManagementApp.business.Donor;
 import BloodBankManagementApp.business.User;
 import lombok.extern.slf4j.Slf4j;
+import org.attoparser.dom.Text;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +57,7 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
     }
 
     @Override
-    public List<Donor> getAllDonor() {
+    public  List<Donor> getAllDonor() {
 
         List<Donor> listOfDonors = new ArrayList<>();
 
@@ -101,6 +103,32 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
         return donor;
 
     }
+    public boolean updateDonorDetails(int id, String phoneNum, Text address) throws RuntimeException {
+        int rowsAffected = 0;
+
+        Connection conn = super.getConnection();
+        try (PreparedStatement ps =
+                     conn.prepareStatement("UPDATE donors SET contactNumber = ?, address = ? WHERE donorID = ?")) {
+            ps.setString(1, phoneNum);
+            ps.setString(2, String.valueOf(address));
+            ps.setInt(3, id);
+
+            rowsAffected = ps.executeUpdate();
+        } catch (SQLException e) {
+            log.info(LocalDateTime.now() + ": An SQLException  occurred while preparing the SQL " +
+                    "statement." + e.getMessage());
+        }
+
+        if(rowsAffected > 1){
+            throw new RuntimeException(LocalDateTime.now() + " ERROR: Multiple rows affected on primary key selection" +
+                    ".");
+        }
+        else if(rowsAffected == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
     private static Donor mapRow(ResultSet rs) throws SQLException {
 
         return Donor.builder()
@@ -113,5 +141,19 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
                 .build();
     }
 
+    public static void main(String[] args) {
+        // Testing getdonorbyId()
+        Donor donor;
+        DonorDao donorDao = new DonorDaoImpl("database.properties");
+        donor = donorDao.getDonorById(2);
+        System.out.println(donor);
+        System.out.println("------------------------------");
+        List<Donor> donorslist = donorDao.getAllDonor();
+        for (Donor d : donorslist
+             ) {
+            System.out.println(d);
+        }
+        //System.out.println(donorslist);
 
+    }
 }

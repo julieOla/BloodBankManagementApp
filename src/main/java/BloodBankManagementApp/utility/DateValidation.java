@@ -1,11 +1,8 @@
 package BloodBankManagementApp.utility;
 
-import java.sql.Array;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
 
 public class DateValidation {
@@ -107,6 +104,25 @@ public class DateValidation {
 
         return diff;
     }
+    // Method to calculate age
+    public static int calculateAge(LocalDate dobInput){
+        dobInput = LocalDate.parse("2000-12-23");
+        // Parse the input to a LocalDate
+       // LocalDate dob = LocalDate.parse( dobInput);
+
+        // Get the current date
+        LocalDate today = LocalDate.now();
+
+        // Calculate the period between today and the Date of Birth
+        //Period period = Period.between(dob, today);
+        Period period = Period.between(dobInput, today);
+
+        // Get the age in years
+        int age = period.getYears();
+
+        // Return  calculated age
+        return age;
+    }
 
     // Driver code
     public static void main(String args[])throws Exception
@@ -121,8 +137,9 @@ public class DateValidation {
         else
             System.out.println("No");
 
-        //Date date = new Date(2018,11,20);
-        Date date = new Date("2018/11/20");
+        Date date = new Date(2018,11,20);
+        LocalDate age = LocalDate.of(2018, 11, 20);
+
 
         /*if (isValidAge(date))
             System.out.println("Yes");
@@ -136,6 +153,7 @@ public class DateValidation {
             System.out.println("No");*/
         //System.out.println(isValidAge(date));
         System.out.println(eligibleAge(date));
+        System.out.println("Calculated Age :  " + calculateAge(age));
     }
 
 

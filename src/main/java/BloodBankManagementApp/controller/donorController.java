@@ -9,6 +9,7 @@ import BloodBankManagementApp.persistence.UserDaoImpl;
 import BloodBankManagementApp.utility.DateValidation;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.attoparser.dom.Text;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -130,10 +131,87 @@ DateValidation validation = new DateValidation();
         model.addAttribute("donors", donors);
         return "listDonors";
     }
-    @GetMapping("/getDonor")
+    /*@GetMapping("/editDonor")
     public String getDonorDetail(@RequestParam(name = "donorID") int donorID, Model model){
         model.addAttribute("donorID", donorID);
-        return "landing";
+        return "editDonor";
 
+    }*/
+   /* @GetMapping("/editDonor")
+    public String showEditDonorForm(@RequestParam int donorID, Model model){
+        DonorDao donorDao = new DonorDaoImpl("database.properties");
+        Donor donor = donorDao.getDonorById(donorID);
+        model.addAttribute("donorID", donorID);
+        return "editDonor";
+
+    }*/
+    @GetMapping("/editDonor")
+    public String showEditDonorForm(@RequestParam int donorID, Model model){
+        DonorDao donorDao = new DonorDaoImpl("database.properties");
+        Donor donor = donorDao.getDonorById(donorID);
+        //model.addAttribute("donorID", donorID);
+        if (donor == null){
+            return "redirect:/listDonors";
+        }
+        Donor newDonor =new Donor();
+        //newDonor.setDonorID(donor.getDonorID());
+        newDonor.setFullName(donor.getFullName());
+        newDonor.setContactNumber(donor.getContactNumber());
+        newDonor.setAddress(donor.getAddress());
+        newDonor.setDateOfBirth(donor.getDateOfBirth());
+
+        model.addAttribute("donor", donor);
+        model.addAttribute("newDonor", newDonor);
+
+        return "editDonor";
+
+    }
+    @PostMapping("/updateDonor")
+    public String updateDonorDetail(
+            @RequestParam int id,
+            @RequestParam(name="contactNumber") String contactNumber,
+            @RequestParam(name="address") Text address,
+
+            Model model, HttpSession session
+    )throws Exception{
+        String errorMsg = null;
+        if (contactNumber == null || contactNumber.isBlank() || !isValidContactNumber(contactNumber)) {
+            errorMsg = "Your contact number must be a local number !";
+        } else if (address == null || address == null) {
+            errorMsg = "Your contact Address is required";
+        }
+        if (errorMsg != null) {
+            model.addAttribute("errorMessage", errorMsg);
+
+            return "donorForm";
+        }
+        /*UserDao userDao = new UserDaoImpl("database.properties");
+
+        // Build new user with the detail entered in registration form
+        Donor newDonor = Donor.builder()
+                .userID(userDonor.getUserID())
+                .fullName(userName)
+                .dateOfBirth(dateOfBirth)
+                .contactNumber(contactNumber)
+                .address(address)
+                .build();
+        */
+
+        // create new dao and register new user
+        DonorDao donorDao = new DonorDaoImpl("database.properties");
+        boolean donorUpdated = donorDao.updateDonorDetails(id, contactNumber, address);
+        if (donorUpdated) {
+            String success = "Donor updated Successful";
+            model.addAttribute("message", success);
+            return "index";
+        } else {
+
+            log.info("Could not update this donor : ");
+            String failed = "could not update donor in database, Try again";
+            model.addAttribute("errorMessage", failed);
+
+
+            return "landing";
+        }
     }
 }

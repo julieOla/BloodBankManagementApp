@@ -12,11 +12,15 @@
 
 </head>
 <body>
-<div class="container">
 <!-- Include the menu bar fragment -->
 <div th:replace="~{fragments/menu :: menu-bar}"></div>
 
 <p th:if="${errorMessage !=null}" th:text="${errorMessage}"></p>
+<div class="container">
+<!-- Include the menu bar fragment -->
+<!--<div th:replace="~{fragments/menu :: menu-bar}"></div>
+
+<p th:if="${errorMessage !=null}" th:text="${errorMessage}"></p>-->
 
 <div class="row" id="registerForm" >
     <form method="post" action="/register"> <!--Action  must match @PostMapping in UserController -->

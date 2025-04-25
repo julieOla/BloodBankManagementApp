@@ -48,21 +48,23 @@ public class EligibilityController {
            model.addAttribute("question15", question15);
 
            // Check eligibility based on answers
-           boolean isEligible = ((question1.equals("Yes") &&question2.equals("Yes") &&question3.equals("Yes"))&&
-
-
-                   question4.equals("No") &&
-                   question5.equals("No") &&
-                   question6.equals("No") &&
-                   question7.equals("No") &&
-                   question8.equals("No") &&
-                   question9.equals("No") &&
-                   question10.equals("No") &&
-                   question11.equals("No") &&
-                   question12.equals("No") &&
-                   question13.equals("No") &&
-                   question14.equals("No") &&
-                   question15.equals("N0"));
+           boolean isEligible = (
+                   question1.equals("Yes") &&
+                           question2.equals("Yes") &&
+                           question3.equals("Yes") &&
+                           question4.equals("No") &&
+                           question5.equals("No") &&
+                           question6.equals("No") &&
+                           question7.equals("No") &&
+                           question8.equals("No") &&
+                           question9.equals("No") &&
+                           question10.equals("No") &&
+                           question11.equals("No") &&
+                           question12.equals("No") &&
+                           question13.equals("No") &&
+                           question14.equals("No") &&
+                           question15.equals("N0")
+           );
 
            model.addAttribute("isEligible", isEligible);
 
