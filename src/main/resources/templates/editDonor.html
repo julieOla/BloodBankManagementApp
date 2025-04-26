@@ -35,6 +35,8 @@
         </div>
         <div class="card-body" id="donor-card" style="background-color: #F1F1F9">
             <form action="/updateDonor" method="POST" th:object="${newDonor}">
+                <!-- Send donorID to the server -->
+                <input type="hidden" name="donorID" th:value="${donor.getDonorID()}" />
                 <!-- Donor ID -->
                 <div class="mb-3">
                     <label  class="form-label">Donor ID</label>

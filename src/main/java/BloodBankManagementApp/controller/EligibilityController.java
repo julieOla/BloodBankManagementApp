@@ -63,7 +63,7 @@ public class EligibilityController {
                            question12.equals("No") &&
                            question13.equals("No") &&
                            question14.equals("No") &&
-                           question15.equals("N0")
+                           question15.equals("No")
            );
 
            model.addAttribute("isEligible", isEligible);

@@ -109,8 +109,9 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
         Connection conn = super.getConnection();
         try (PreparedStatement ps =
                      conn.prepareStatement("UPDATE donors SET contactNumber = ?, address = ? WHERE donorID = ?")) {
-            ps.setString(1, phoneNum);
-            ps.setString(2, String.valueOf(address));
+
+            ps.setString(1, String.valueOf(address));
+            ps.setString(2, phoneNum);
             ps.setInt(3, id);
 
             rowsAffected = ps.executeUpdate();

@@ -145,11 +145,23 @@ DateValidation validation = new DateValidation();
         return "editDonor";
 
     }*/
+    /* public String showEditDonorForm(@RequestParam(value = "donorID", required = false) Integer donorID,
+                                @RequestParam(value = "id", required = false) Integer id,
+                                Model model) {
+    if (donorID == null && id != null) {
+        donorID = id;
+    }
+    if (donorID == null) {
+        return "redirect:/listDonors";
+    }*/
     @GetMapping("/editDonor")
-    public String showEditDonorForm(@RequestParam int donorID, Model model){
+    public String showEditDonorForm(@RequestParam(value = "donorID", required = false) Integer donorID,@RequestParam(value = "id", required = false) Integer id, Model model){
         DonorDao donorDao = new DonorDaoImpl("database.properties");
         Donor donor = donorDao.getDonorById(donorID);
         //model.addAttribute("donorID", donorID);
+        if (donorID == null && id != null) {
+            donorID = id;
+        }
         if (donor == null){
             return "redirect:/listDonors";
         }
@@ -168,14 +180,17 @@ DateValidation validation = new DateValidation();
     }
     @PostMapping("/updateDonor")
     public String updateDonorDetail(
-            @RequestParam int id,
+            @RequestParam("donorID") int donorID,
             @RequestParam(name="contactNumber") String contactNumber,
             @RequestParam(name="address") Text address,
 
             Model model, HttpSession session
     )throws Exception{
         String errorMsg = null;
-        if (contactNumber == null || contactNumber.isBlank() || !isValidContactNumber(contactNumber)) {
+        if(donorID == 0){
+            errorMsg = "No DonorID !";
+        }
+        else if (contactNumber == null || contactNumber.isBlank() || !isValidContactNumber(contactNumber)) {
             errorMsg = "Your contact number must be a local number !";
         } else if (address == null || address == null) {
             errorMsg = "Your contact Address is required";
@@ -185,25 +200,14 @@ DateValidation validation = new DateValidation();
 
             return "donorForm";
         }
-        /*UserDao userDao = new UserDaoImpl("database.properties");
-
-        // Build new user with the detail entered in registration form
-        Donor newDonor = Donor.builder()
-                .userID(userDonor.getUserID())
-                .fullName(userName)
-                .dateOfBirth(dateOfBirth)
-                .contactNumber(contactNumber)
-                .address(address)
-                .build();
-        */
 
         // create new dao and register new user
         DonorDao donorDao = new DonorDaoImpl("database.properties");
-        boolean donorUpdated = donorDao.updateDonorDetails(id, contactNumber, address);
+        boolean donorUpdated = donorDao.updateDonorDetails(donorID, contactNumber, address);
         if (donorUpdated) {
             String success = "Donor updated Successful";
             model.addAttribute("message", success);
-            return "index";
+            return "listDonors";
         } else {
 
             log.info("Could not update this donor : ");
@@ -211,7 +215,7 @@ DateValidation validation = new DateValidation();
             model.addAttribute("errorMessage", failed);
 
 
-            return "landing";
+            return "editDonor";
         }
     }
 }
