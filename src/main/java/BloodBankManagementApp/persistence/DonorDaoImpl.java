@@ -179,6 +179,13 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
             return true;
         }
     }
+    /**
+     * Maps a row from the ResultSet to a Donor object.
+     *
+     * @param rs the result set from the SQL query
+     * @return a Donor object populated with data from the current row
+     * @throws SQLException if a database access error occurs
+     */
     private static Donor mapRow(ResultSet rs) throws SQLException {
 
         return Donor.builder()
@@ -190,7 +197,11 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
                 .address(rs.getString("address"))
                 .build();
     }
-
+    /**
+     * Main method for testing the functionality of this DAO implementation.
+     *
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
         // Testing getdonorbyId()
         Donor donor;

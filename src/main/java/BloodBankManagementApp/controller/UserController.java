@@ -21,11 +21,30 @@ import javax.crypto.SecretKey;
 //import org.mindrot.jbcrypt.BCrypt;
 
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+/**
+ * Controller class for handling user-related operations such as registration,
+ * login, and logout in the Blood Bank Management Application.
+ */
 @Slf4j
 
 @Controller
 public class UserController {
-
+    /**
+     * Handles user registration form submission.
+     * Validates form fields, hashes the password, creates a new User object,
+     * and stores it in the database.
+     *
+     * @param username  the username submitted by the user
+     * @param email     the email address submitted by the user
+     * @param password  the password submitted by the user
+     * @param password2 the password confirmation
+     * @param role      the role selected by the user (ADMIN, DONOR, EMPLOYEE, HOSPITAL_ADMIN)
+     * @param model     Spring Model to pass attributes to the view
+     * @param session   HttpSession to store session data
+     * @return redirect to login page if registration is successful,
+     *         otherwise returns the registration form view with error message
+     * @throws Exception in case of hashing or persistence errors
+     */
 
     @PostMapping("addUser")
     public String registerUser(
@@ -157,6 +176,17 @@ public class UserController {
         return "registrationForm";
     }
 
+    /**
+     * Handles user login.
+     * Validates credentials, checks hashed password, and starts session on success.
+     *
+     * @param username the username submitted by the user
+     * @param password the password submitted by the user
+     * @param model    Spring Model to pass attributes to the view
+     * @param session  HttpSession to store session data
+     * @return redirect to landing page if login is successful, otherwise return to login page
+     * @throws Exception if any hashing or database error occurs
+     */
 
     @PostMapping("/login")
     public String login(
@@ -252,6 +282,14 @@ public class UserController {
 
 
     // LOGOUT METHOD
+    /**
+     * Handles user logout.
+     * Ends the current session and returns to the index page.
+     *
+     * @param model   Spring Model to pass attributes to the view
+     * @param session HttpSession to clear user data
+     * @return redirect to index page after logout
+     */
     @GetMapping("/logout")
     public String logout(Model model, HttpSession session){
         session.setAttribute("CurrentUser", null); // Sets current user to null

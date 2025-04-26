@@ -10,77 +10,48 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * BloodDonationDaoImpl provides the implementation for accessing and managing blood donation data
+ * in a MySQL database. This DAO class handles CRUD operations related to the blooddonations table.
+ *
+ * This implementation extends {@link MySQLDao} to inherit database connection utilities
+ * and implements {@link BloodDonationDao} interface.
+ *
+ * <p>Logging is provided using SLF4J for monitoring operations and handling exceptions.</p>
+ */
 @Slf4j
 public class BloodDonationDaoImpl extends MySQLDao implements BloodDonationDao{
-
+    /**
+     * Constructs a BloodDonationDaoImpl with a given properties file for database configuration.
+     *
+     * @param propertiesFile the name of the properties file containing DB configuration
+     */
     public BloodDonationDaoImpl(String propertiesFile) {
         super(propertiesFile);
     }
 
+    /**
+     * Constructs a BloodDonationDaoImpl using an existing {@link Connection} object.
+     *
+     * @param c the database connection
+     */
     public BloodDonationDaoImpl(Connection c) {
         super(c);
     }
 
+    /**
+     * Constructs a BloodDonationDaoImpl using the default database configuration.
+     */
     public BloodDonationDaoImpl() {
         super();
     }
 
-
-    //@Override
-    /*public boolean addBloodDonation(BloodDonation donation) {
-        boolean added = false;
-
-        Connection c = super.getConnection();
-        //User donorUser =
-        try (PreparedStatement ps = c.prepareStatement("INSERT INTO blooddonations (donorID, bloodTypeID, quantity, colectionDate, status) VALUES(?, ?, ?,?,?)")) {
-            ps.setInt(1, donation.getDonorID());
-           // ps.setString(2,  donation.getBloodType().getBloodTypeID();
-            ps.setInt(2, donation.getDonationID());
-            ps.setDouble(3, donation.getQuantity());
-            ps.setDate(4, Date.valueOf(String.valueOf(donation.getCollectionDate())));
-            ps.setString(5, String.valueOf(donation.getStatus()));
-
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                added = true;
-            }
-        } catch (SQLIntegrityConstraintViolationException e) {
-            log.error("SQLIntegrityConstraintViolationException occurred when attempting to register new User", e);
-        } catch (SQLException e) {
-            log.error("SQLException occurred when attempting to register new User", e);
-        }
-
-        super.freeConnection(c);
-
-        return added;
-       // return false;
-    }*/
-
-   /* @Override
-    /*public List<BloodDonation> getAllBloodDonation() {
-        List<BloodDonation> listOfDonations = new ArrayList<>();
-
-        Connection c = super.getConnection();
-        try (PreparedStatement ps = c.prepareStatement("SELECT * FROM blooddonations ")) {
-
-            try(ResultSet rs = ps.executeQuery()){
-                while (rs.next()){
-                    listOfDonations.add(mapRow(rs));
-                }
-            }catch (SQLException e) {
-                log.error("SQLException occurred when processing query resultset", e);
-            }
-        }catch (SQLException e) {
-            log.error("SQLException occurred when attempting to execute get donors query", e);
-        }
-        super.freeConnection(c);
-
-        return listOfDonations;
-        //return null;
-    }*/
-
+    /**
+     * Adds a new blood donation record to the database.
+     *
+     * @param donation the {@link BloodDonation} object to be added
+     * @return true if the record was added successfully; false otherwise
+     */
     @Override
     public boolean addBloodDonation(BloodDonation donation) {
         boolean added = false;
@@ -117,7 +88,11 @@ public class BloodDonationDaoImpl extends MySQLDao implements BloodDonationDao{
         return added;
 
     }
-
+    /**
+     * Retrieves all blood donation records from the database.
+     *
+     * @return a list of {@link BloodDonation} objects
+     */
     @Override
     public List<BloodDonation> getAllBloodDonation() {
         List<BloodDonation> listOfDonations = new ArrayList<>();
@@ -141,6 +116,12 @@ public class BloodDonationDaoImpl extends MySQLDao implements BloodDonationDao{
 
     }
 
+    /**
+     * Retrieves a blood donation by its unique ID.
+     *
+     * @param id the donation ID
+     * @return the {@link BloodDonation} object if found, or null if not found
+     */
     @Override
     public BloodDonation getBloodDonationByID(int id) {
 
@@ -175,7 +156,12 @@ public class BloodDonationDaoImpl extends MySQLDao implements BloodDonationDao{
         }
         return donation;
     }
-
+    /**
+     * Deletes a blood donation record by its ID.
+     *
+     * @param id the donation ID
+     * @return true if a record was deleted; false if no matching record was found
+     */
         @Override
     public boolean deleteBloodDonationByID(int id) {
             int rowsAffected = 0;
@@ -204,6 +190,14 @@ public class BloodDonationDaoImpl extends MySQLDao implements BloodDonationDao{
 
     }
 
+    /**
+     * Updates the status of a blood donation entry by its ID.
+     *
+     * @param id     the donation ID
+     * @param status the new status as a string (e.g., "STORED", "TESTED")
+     * @return true if update was successful, false if no records were updated
+     * @throws RuntimeException if more than one record is updated (violates primary key constraint)
+     */
     @Override
     public boolean updateBloodDonationByID(int id, String status)throws RuntimeException {
         //return false;
@@ -270,6 +264,13 @@ public class BloodDonationDaoImpl extends MySQLDao implements BloodDonationDao{
          }
          return result;
      }*/
+    /**
+     * Extracts a {@link BloodDonation.Status} enum from the result set string.
+     *
+     * @param resultSet the result set containing a "status" column
+     * @return the corresponding Status enum
+     * @throws SQLException if database access error occurs
+     */
 
     // Method to convert Status to string, returns status
     private static BloodDonation.Status getStatus(ResultSet resultSet) throws SQLException {
@@ -300,6 +301,13 @@ public class BloodDonationDaoImpl extends MySQLDao implements BloodDonationDao{
         return status;
     }
 
+    /**
+     * Converts a {@link BloodDonation.Status} enum to its string representation.
+     *
+     * @param stat the Status enum
+     * @return the string representation of the status
+     * @throws SQLException if the conversion fails
+     */
     // Method to convert Status to string, returns string
     private static String getStatusAsString(BloodDonation.Status stat) throws SQLException {
         BloodDonation.Status status ;
@@ -329,6 +337,13 @@ public class BloodDonationDaoImpl extends MySQLDao implements BloodDonationDao{
         }
         return result;
     }
+    /**
+     * Maps a row from the result set to a {@link BloodDonation} object.
+     *
+     * @param rs the result set from a query on the blooddonations table
+     * @return a populated {@link BloodDonation} object
+     * @throws SQLException if a database access error occurs or data format is unexpected
+     */
     private static BloodDonation mapRow(ResultSet rs) throws SQLException {
         // Assuming "status" in the ResultSet is a string (e.g., "STORED, TESTED, SUPPLIED, DISCARDED")
         String statusString = rs.getString("status");
@@ -479,7 +494,59 @@ public class BloodDonationDaoImpl extends MySQLDao implements BloodDonationDao{
 
     }
   //###########################################################################################################
+    //@Override
+    /*public boolean addBloodDonation(BloodDonation donation) {
+        boolean added = false;
 
+        Connection c = super.getConnection();
+        //User donorUser =
+        try (PreparedStatement ps = c.prepareStatement("INSERT INTO blooddonations (donorID, bloodTypeID, quantity, colectionDate, status) VALUES(?, ?, ?,?,?)")) {
+            ps.setInt(1, donation.getDonorID());
+           // ps.setString(2,  donation.getBloodType().getBloodTypeID();
+            ps.setInt(2, donation.getDonationID());
+            ps.setDouble(3, donation.getQuantity());
+            ps.setDate(4, Date.valueOf(String.valueOf(donation.getCollectionDate())));
+            ps.setString(5, String.valueOf(donation.getStatus()));
+
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                added = true;
+            }
+        } catch (SQLIntegrityConstraintViolationException e) {
+            log.error("SQLIntegrityConstraintViolationException occurred when attempting to register new User", e);
+        } catch (SQLException e) {
+            log.error("SQLException occurred when attempting to register new User", e);
+        }
+
+        super.freeConnection(c);
+
+        return added;
+       // return false;
+    }*/
+
+   /* @Override
+    /*public List<BloodDonation> getAllBloodDonation() {
+        List<BloodDonation> listOfDonations = new ArrayList<>();
+
+        Connection c = super.getConnection();
+        try (PreparedStatement ps = c.prepareStatement("SELECT * FROM blooddonations ")) {
+
+            try(ResultSet rs = ps.executeQuery()){
+                while (rs.next()){
+                    listOfDonations.add(mapRow(rs));
+                }
+            }catch (SQLException e) {
+                log.error("SQLException occurred when processing query resultset", e);
+            }
+        }catch (SQLException e) {
+            log.error("SQLException occurred when attempting to execute get donors query", e);
+        }
+        super.freeConnection(c);
+
+        return listOfDonations;
+        //return null;
+    }*/
     /*private static BloodDonation mapRow(ResultSet rs) throws SQLException {
         Donor newdonor = new Donor();
         // Assuming "Type" in the ResultSet is a string (e.g., "A+" or "A-" ...)
