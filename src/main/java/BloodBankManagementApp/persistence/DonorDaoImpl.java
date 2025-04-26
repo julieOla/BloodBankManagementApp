@@ -10,22 +10,51 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Implementation of the {@link DonorDao} interface to interact with the Donor table in the database.
+ * This class provides methods for adding, updating, and retrieving donor records.
+ * It extends {@link MySQLDao} for database connection handling.
+ *
+ * <p>Logging is provided using Lombok's {@code @Slf4j} annotation.</p>
+ *
+ * @see Donor
+ * @see MySQLDao
+ */
 
 @Slf4j
 public class DonorDaoImpl extends MySQLDao implements DonorDao{
 
+    /**
+     * Constructs a DonorDaoImpl with a specific properties file for DB configuration.
+     *
+     * @param propertiesFile the name of the properties file
+     */
     public DonorDaoImpl(String propertiesFile) {
         super(propertiesFile);
     }
 
+    /**
+     * Constructs a DonorDaoImpl with an existing database connection.
+     *
+     * @param c the SQL connection
+     */
     public DonorDaoImpl(Connection c) {
         super(c);
     }
 
+    /**
+     * Constructs a DonorDaoImpl with default configuration.
+     */
     public DonorDaoImpl() {
         super();
     }
+
+    /**
+     * Adds a new donor to the database.
+     *
+     * @param donor the Donor object to be added
+     * @return {@code true} if donor was added successfully, {@code false} otherwise
+     */
     @Override
     public boolean addDonor(Donor donor) {
 
@@ -56,6 +85,11 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
         return added;
     }
 
+    /**
+     * Retrieves a list of all donors from the database.
+     *
+     * @return a List of Donor objects
+     */
     @Override
     public  List<Donor> getAllDonor() {
 
@@ -79,7 +113,12 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
         return listOfDonors;
 
     }
-
+    /**
+     * Retrieves a donor by their unique ID.
+     *
+     * @param donorId the donor ID
+     * @return the Donor object if found, or {@code null} otherwise
+     */
     @Override
     public Donor getDonorById(int donorId) {
         Donor donor = null;
@@ -103,6 +142,16 @@ public class DonorDaoImpl extends MySQLDao implements DonorDao{
         return donor;
 
     }
+
+    /**
+     * Updates a donor's contact number and address.
+     *
+     * @param id       the donor ID
+     * @param phoneNum the new contact number
+     * @param address  the new address
+     * @return {@code true} if update was successful, {@code false} if no rows were affected
+     * @throws RuntimeException if more than one row is affected
+     */
     public boolean updateDonorDetails(int id, String phoneNum, Text address) throws RuntimeException {
         int rowsAffected = 0;
 

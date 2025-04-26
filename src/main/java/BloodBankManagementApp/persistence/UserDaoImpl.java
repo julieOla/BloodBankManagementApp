@@ -5,21 +5,44 @@ import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
-
+/**
+ * Implementation of the {@link UserDao} interface for handling user-related
+ * database operations in a MySQL database for the Blood Bank Management application.
+ * <p>
+ * This class supports user registration, login, and retrieval by username.
+ */
 @Slf4j
 public class UserDaoImpl extends MySQLDao implements UserDao{
-
+    /**
+     * Constructor that initializes the DAO with database configuration from a properties file.
+     *
+     * @param propertiesFile the path to the database properties file.
+     */
     public UserDaoImpl(String propertiesFile) {
         super(propertiesFile);
     }
-
+    /**
+     * Constructor that initializes the DAO with a given SQL connection.
+     *
+     * @param c a {@link Connection} object.
+     */
     public UserDaoImpl(Connection c) {
         super(c);
     }
 
+    /**
+     * Default constructor that uses the default database configuration.
+     */
     public UserDaoImpl() {
         super();
     }
+
+    /**
+     * Registers a new user in the database.
+     *
+     * @param user the {@link User} object containing user details.
+     * @return {@code true} if the user was successfully added; {@code false} otherwise.
+     */
     @Override
     public boolean registerUser(User user) {
         boolean added = false;
@@ -54,6 +77,12 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
     public User login(String username, String password) {
         return null;
     }*/
+    /**
+     * Logs in a user by their username.
+     *
+     * @param username the username to log in with.
+     * @return the {@link User} object if a matching record is found; {@code null} otherwise.
+     */
     @Override
     public User loginByUsername(String username) {
         User user = null;
@@ -76,6 +105,12 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
 
         return user;
     }
+    /**
+     * Retrieves a user by their username.
+     *
+     * @param username the username of the user.
+     * @return the {@link User} object if found; {@code null} otherwise.
+     */
     @Override
     public User getUserByUserName(String username) {
         User user = null;
@@ -100,6 +135,13 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
     }
 
     //static User.Role role;
+    /**
+     * Maps a row from the {@link ResultSet} to a {@link User} object.
+     *
+     * @param rs the result set containing user data.
+     * @return the constructed {@link User} object.
+     * @throws SQLException if any SQL errors occur during field extraction.
+     */
 
     private static User mapRow(ResultSet rs) throws SQLException {
         // Assuming "role" in the ResultSet is a string (e.g., "ADMIN" or "USER")
@@ -142,7 +184,12 @@ public class UserDaoImpl extends MySQLDao implements UserDao{
                 .build();
     }
 
-
+    /**
+     * Validates a {@link User} object by checking that its fields are not null or blank.
+     *
+     * @param u the user object to validate.
+     * @return {@code true} if the user is valid; {@code false} otherwise.
+     */
     private boolean  validUser(User u){
         if(u == null){
             return false;
